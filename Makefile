@@ -12,13 +12,13 @@ TARGET_TYPE_DLL = SHARED
 
 # ** 项目配置区 **
 #    输出文件名称
-TARGET_NAME     = libmodel
+TARGET_NAME     = sparrow
 #    输出文件类型
 TARGET_TYPE     = ${TARGET_TYPE_DLL}
 #    输出文件后缀 [自动判别]
 TARGET_NAME_EXT =
 #    安装位置
-INSTALL_PATH    = /usr/local/libmodel
+INSTALL_PATH    = /usr/local/sparrow
 
 TARGET_OBJECTS_DIR := ./obj
 TARGET_HEADERS_DIR := ./include
@@ -30,7 +30,7 @@ TARGET_SOURCES = $(wildcard ${TARGET_SOURCES_DIR}/*.cpp)
 TARGET_OBJECTS = $(patsubst %.cpp,${TARGET_OBJECTS_DIR}/%.o,$(notdir ${TARGET_SOURCES}))
 TARGET_HEADERS = $(wildcard $(TARGET_HEADERS_DIR)/*.h)
 
-TARGET_LIBS = -lstdc++
+TARGET_LIBS = -lstdc++ -lcpp -larguments -lmodel -lmodule -lioevent
 # 链接标志
 TARGET_LIB_PIC_SHARED  = -fPIC
 TARGET_LIB_PIC_STATIC  = 
@@ -124,7 +124,23 @@ endif
 #${TARGET_OBJECTS_DIR}/%.o : $(TARGET_SOURCES_DIR)/%.cpp
 #	cc ${CFLAGS} ${CXXFLAGS} -c $< -o $@ ${TARGET_LIB_PIC}
 
-YOUSHOULDMAKEITALL:arg model module io qr
+YOUSHOULDMAKEITALL:arg model module io qr diff sparrow
+
+SPARROW_LIBS = -lstdc++
+
+sparrow : obj/sparrow.o
+	cc -o bin/sparrow obj/sparrow.o ${IO_LIBS}
+obj/sparrow.o : main/sparrow.cpp
+	cc ${CFLAGS} ${CXXFLAGS} -c main/sparrow.cpp -o obj/sparrow.o
+
+# DIFF
+# 
+DIFF_LIBS = -lstdc++ -larguments -lxdiff
+#
+diff : ./obj/diff.o
+	cc -o bin/diff ./obj/diff.o ${DIFF_LIBS}
+./obj/diff.o:./main/diff.cpp
+	cc ${CFLAGS} ${CXXFLAGS} -c ./main/diff.cpp -o ./obj/diff.o
 
 # QR
 #
@@ -145,7 +161,7 @@ obj/io.o : main/io.cpp
 
 # Module
 #
-MODULE_LIBS = -lstdc++ -lmodule -lioevent
+MODULE_LIBS = -lstdc++ -lmodel -lmodule -lioevent
 
 module : obj/module.o
 	    cc -o bin/module obj/module.o ${MODULE_LIBS}

@@ -246,7 +246,7 @@ int encode(const arguments& args) {
 	    QRSlice* slice = new QRSlice();
 
 	    if(slice) {
-	        slice->contentSet((unsigned char*)arg.values[i].c_str());
+	        slice->contentSet(arg.values[i].c_str());
 
 		slice->saveToFile("./bin","OK",4);
 	    }

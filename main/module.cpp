@@ -24,6 +24,10 @@ int main(int argc,char** argv) {
         IOEngine* engine = static_cast<IOEngine*>(interface->createObject("engine"));
         if(engine) {
              std::cout << "Module : IOEngineLWS - IOEngine created." << std::endl;
+             Model em(ModelElement::MET_MAP);
+             ME es("IOET_UDP");
+             em.insertSubelement(&es,"type");
+             engine->createEndpoint(em);
              delete engine;
         } else {
              std::cout << "Module : IOEngineLWS - IOEngine create failed." << std::endl;

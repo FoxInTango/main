@@ -10,10 +10,14 @@ int main(int argc,char** argv) {
     Model ioModel(ME::MET_MAP);
     ME engines(ME::MET_ARRAY);
     ioModel.insertSubelement(&engines,"engines");
+    ME engine(ME::MET_MAP);
+    ME path("/usr/local/lib/IOEngineLWS.so");
+    engine.insertSubelement(&path,"path");
+    engines.appendSubelement(&engine);
     ioModel.echo(0);
-    std::cout << "IO Model subelement count : " << ioModel.subelementCount() << std::endl;
+    //std::cout << "IO Model subelement count : " << ioModel.subelementCount() << std::endl;
+    
     libioevent_startup(ioModel);
-
     libioevent_shutdown();
     return 0;
 }
